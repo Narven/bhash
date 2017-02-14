@@ -4,21 +4,22 @@ import (
 	"flag"
 	"fmt"
 
-	"log"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
 func main() {
 
-	var password = flag.String("password", "", "Password for encryption")
+	var password string
+	flag.StringVar(&password, "password", "DEFAULT", "Password for encryption")
+	flag.Parse()
 
-	if *password != "" {
-		log.Println("Password is empty. Still generating")
+	if password == "" {
+		fmt.Println("Password is empty. Still generating")
 	}
 
-	p := []byte(*password)
+	p := []byte(password)
 	hp, _ := bcrypt.GenerateFromPassword(p, bcrypt.DefaultCost)
 
-	fmt.Println("\nHashed Password: ", string(hp))
+	fmt.Println("\nPassword: ", password)
+	fmt.Println("Hashed Password: ", string(hp))
 }
